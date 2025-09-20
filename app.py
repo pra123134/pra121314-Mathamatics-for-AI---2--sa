@@ -53,6 +53,23 @@ else:
 # Step 2: Data Preprocessing
 # ==========================
 
+# ==========================
+# Step 2: Data Preprocessing
+# ==========================
+
+required_cols = [
+    "Player_Name", "Club_Name", "Rating", "Goals",
+    "Team_Goals_Before", "Team_Goals_During",
+    "Age", "Injury_Start", "Injury_End", "Status"
+]
+
+missing_cols = [col for col in required_cols if col not in df.columns]
+
+if missing_cols:
+    st.error(f"❌ Missing columns in dataset: {missing_cols}")
+    st.stop()
+
+# Now safe to preprocess
 df['Rating'] = df['Rating'].fillna(df['Rating'].mean())
 df['Goals'] = df['Goals'].fillna(0)
 df['Injury_Start'] = pd.to_datetime(df['Injury_Start'], errors='coerce')
@@ -68,6 +85,7 @@ df.rename(columns={
 }, inplace=True)
 
 df['Performance_Change'] = df['Avg_Rating_After'] - df['Avg_Rating_Before']
+
 
 # ==========================
 # Step 3: EDA
